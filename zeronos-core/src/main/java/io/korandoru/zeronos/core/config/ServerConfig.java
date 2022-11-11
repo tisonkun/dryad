@@ -27,43 +27,43 @@ import java.util.Optional;
 
 public class ServerConfig {
 
-    private final DocumentContext context;
+  private final DocumentContext context;
 
-    public static ServerConfig defaultConfig() throws IOException {
-        return readConfig(ServerConfig.class.getResource("/server.toml"));
-    }
+  public static ServerConfig defaultConfig() throws IOException {
+    return readConfig(ServerConfig.class.getResource("/server.toml"));
+  }
 
-    public static ServerConfig readConfig(URL source) throws IOException {
-        final var mapper = new TomlMapper();
-        final var root = mapper.readTree(source);
-        final var config = Configuration.builder().mappingProvider(new JacksonMappingProvider()).build();
-        final var context = JsonPath.using(config).parse(root.toPrettyString());
-        return new ServerConfig(context);
-    }
+  public static ServerConfig readConfig(URL source) throws IOException {
+    final var mapper = new TomlMapper();
+    final var root = mapper.readTree(source);
+    final var config = Configuration.builder().mappingProvider(new JacksonMappingProvider()).build();
+    final var context = JsonPath.using(config).parse(root.toPrettyString());
+    return new ServerConfig(context);
+  }
 
-    private ServerConfig(DocumentContext context) {
-        this.context = context;
-    }
+  private ServerConfig(DocumentContext context) {
+    this.context = context;
+  }
 
-    public String storageBasedir() {
-        return context.read("$.storage.basedir");
-    }
+  public String storageBasedir() {
+    return context.read("$.storage.basedir");
+  }
 
-    public boolean snapshotAutoTriggerEnabled() {
-        return findSnapshotAutoTriggerThreshold().isPresent();
-    }
+  public boolean snapshotAutoTriggerEnabled() {
+    return findSnapshotAutoTriggerThreshold().isPresent();
+  }
 
-    public long snapshotAutoTriggerThreshold() {
-        return findSnapshotAutoTriggerThreshold().orElse(400000L);
-    }
+  public long snapshotAutoTriggerThreshold() {
+    return findSnapshotAutoTriggerThreshold().orElse(400000L);
+  }
 
-    private Optional<Long> findSnapshotAutoTriggerThreshold() {
-        return Optional.ofNullable(context.read("$.snapshot.auto-trigger-threshold", Long.class));
-    }
+  private Optional<Long> findSnapshotAutoTriggerThreshold() {
+    return Optional.ofNullable(context.read("$.snapshot.auto-trigger-threshold", Long.class));
+  }
 
-    @Override
-    public String toString() {
-        return context.jsonString();
-    }
+  @Override
+  public String toString() {
+    return context.jsonString();
+  }
 
 }

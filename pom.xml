@@ -223,10 +223,13 @@ limitations under the License.
                 <artifactId>rewrite-maven-plugin</artifactId>
                 <version>${maven-rewrite-plugin.version}</version>
                 <configuration>
+                    <configLocation>tools/ci/rewrite.yml</configLocation>
+                    <activeStyles>
+                        <activeStyle>com.netflix.eureka.Style</activeStyle>
+                    </activeStyles>
                     <activeRecipes>
-                        <recipe>org.openrewrite.java.cleanup.Cleanup</recipe>
+                        <activeRecipe>org.openrewrite.java.format.AutoFormat</activeRecipe>
                     </activeRecipes>
-                    <checkstyleConfigFile>tools/ci/checkstyle.xml</checkstyleConfigFile>
                 </configuration>
             </plugin>
             <plugin>

@@ -30,35 +30,36 @@ import java.util.UUID;
 
 public class ClusterConfig {
 
-    private final DocumentContext context;
+  private final DocumentContext context;
 
-    public static ClusterConfig defaultConfig() throws IOException {
-        return readConfig(ClusterConfig.class.getResource("/cluster.toml"));
-    }
+  public static ClusterConfig defaultConfig() throws IOException {
+    return readConfig(ClusterConfig.class.getResource("/cluster.toml"));
+  }
 
-    public static ClusterConfig readConfig(URL source) throws IOException {
-        final var mapper = new TomlMapper();
-        final var root = mapper.readTree(source);
-        final var config = Configuration.builder().mappingProvider(new JacksonMappingProvider()).build();
-        final var context = JsonPath.using(config).parse(root.toPrettyString());
-        return new ClusterConfig(context);
-    }
+  public static ClusterConfig readConfig(URL source) throws IOException {
+    final var mapper = new TomlMapper();
+    final var root = mapper.readTree(source);
+    final var config = Configuration.builder().mappingProvider(new JacksonMappingProvider()).build();
+    final var context = JsonPath.using(config).parse(root.toPrettyString());
+    return new ClusterConfig(context);
+  }
 
-    private ClusterConfig(DocumentContext context) {
-        this.context = context;
-    }
+  private ClusterConfig(DocumentContext context) {
+    this.context = context;
+  }
 
-    public UUID groupId() {
-        return UUID.fromString(context.read("$.group.id"));
-    }
+  public UUID groupId() {
+    return UUID.fromString(context.read("$.group.id"));
+  }
 
-    public List<RaftPeerModel> peers() {
-        return context.read("$.group.peer", new TypeRef<>() {});
-    }
+  public List<RaftPeerModel> peers() {
+    return context.read("$.group.peer", new TypeRef<>() {
+    });
+  }
 
-    @Override
-    public String toString() {
-        return context.jsonString();
-    }
+  @Override
+  public String toString() {
+    return context.jsonString();
+  }
 
 }

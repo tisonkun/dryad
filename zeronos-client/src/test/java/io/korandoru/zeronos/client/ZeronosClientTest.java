@@ -16,8 +16,7 @@
 
 package io.korandoru.zeronos.client;
 
-import io.korandoru.zeronos.core.config.ClusterConfig;
-import io.korandoru.zeronos.core.config.ServerConfig;
+import io.korandoru.zeronos.core.config.*;
 import io.korandoru.zeronos.server.ZeronosServer;
 import java.time.Instant;
 import java.util.HashMap;

@@ -16,4 +16,5 @@
 
 package io.korandoru.zeronos.core.config.model;
 
-public record RaftPeerModel (String id, String address) {}
+public record RaftPeerModel (String id, String address) {
+}
